@@ -2,7 +2,7 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Form Curhat Komik</title>
+    <title>KOMIK INFO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
       body {
@@ -88,7 +88,7 @@
           placeholder="Nama Komik"
           required
         />
-        <input type="text" name="chapter" placeholder="Chapter ke-" required />
+        <input type="number" name="chapter" placeholder="Chapter ke-" required min="1" step="1" />
         <textarea
           name="alasan"
           placeholder="Alasan kamu berhenti atau lanjut..."
@@ -96,8 +96,9 @@
           required
         ></textarea>
         <select name="lanjut">
-          <option value="Lanjut">Lanjut Baca</option>
+          <option value="Banget">Banget</option>
           <option value="Berhenti">Berhenti Dulu 😩</option>
+          <option value="Buruk">Buruk</option>
           <option value="END">END</option>
           <option value="END SEASON">END SEASON</option>
         </select>
