@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Form Curhat Komik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(120deg, #fdfbfb, #ebedee);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h2 {
+        margin-bottom: 25px;
+        color: #333;
+        text-align: center;
+      }
+
+      input,
+      textarea,
+      select,
+      button {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        transition: all 0.2s ease-in-out;
+      }
+
+      input:focus,
+      textarea:focus,
+      select:focus {
+        border-color: #6c63ff;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+      }
+
+      button {
+        background: #6c63ff;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      button:hover {
+        background: #574fe1;
+      }
+
+      .status {
+        text-align: center;
+        margin-top: 15px;
+        font-weight: bold;
+      }
+
+      .success {
+        color: green;
+      }
+
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Form Curhat Komik 🧾</h2>
+      <form id="komikForm">
+        <input
+          type="text"
+          name="nama_komik"
+          placeholder="Nama Komik"
+          required
+        />
+        <input type="text" name="chapter" placeholder="Chapter ke-" required />
+        <textarea
+          name="alasan"
+          placeholder="Alasan kamu berhenti atau lanjut..."
+          rows="4"
+          required
+        ></textarea>
+        <select name="lanjut">
+          <option value="Lanjut">Lanjut Baca</option>
+          <option value="Berhenti">Berhenti Dulu 😩</option>
+        </select>
+        <button type="submit">📤 Kirim ke Telegram</button>
+      </form>
+      <div class="status" id="statusMsg"></div>
+    </div>
+
+    <script>
+      const token = "8171765574:AAFYa9KsnU4o-IeOy5ZDyGS1U8CwG1DTtd0"; // ganti token
+      const chatId = "314138805"; // ganti chat ID
+
+      const form = document.getElementById("komikForm");
+      const statusMsg = document.getElementById("statusMsg");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const data = new FormData(form);
+
+        const message =
+          `📚 Komik Update Baru:\n` +
+          `📖 Nama Komik: ${data.get("nama_komik")}\n` +
+          `🔢 Chapter: ${data.get("chapter")}\n` +
+          `📝 Alasan: ${data.get("alasan")}\n` +
+          `📌 Lanjut Baca?: ${data.get("lanjut")}`;
+
+        statusMsg.textContent = "Mengirim... ⏳";
+        statusMsg.className = "status";
+
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: chatId, text: message }),
+        })
+          .then((response) => {
+            if (!response.ok) throw new Error("Gagal mengirim");
+            statusMsg.textContent = "✅ Berhasil dikirim ke Telegram!";
+            statusMsg.className = "status success";
+            form.reset();
+          })
+          .catch(() => {
+            statusMsg.textContent = "❌ Gagal mengirim. Cek token/chat ID.";
+            statusMsg.className = "status error";
+          });
+      });
+    </script>
+  </body>
+</html>
